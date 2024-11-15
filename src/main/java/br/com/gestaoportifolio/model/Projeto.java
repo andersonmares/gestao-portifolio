@@ -1,6 +1,7 @@
 package br.com.gestaoportifolio.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@Getter
 public class Projeto {
 
     @Id
