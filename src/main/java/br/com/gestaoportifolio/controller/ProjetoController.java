@@ -1,50 +1,68 @@
 package br.com.gestaoportifolio.controller;
 
 import br.com.gestaoportifolio.model.Projeto;
-import br.com.gestaoportifolio.model.Status;
-import br.com.gestaoportifolio.service.ProjetoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+@Tag(name = "Projetos")
+public interface ProjetoController {
 
-@RestController
-@RequestMapping("/projetos")
-public class ProjetoController {
-
-    @Autowired
-    private ProjetoService projetoService;
-
+    @Operation(summary = "Listar todos os projetos",
+            description = "Lista todos os projetos disponíveis no sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Projetos listados com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Projeto.class))),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor",
+                    content = @Content(mediaType = "application/json"))
+    })
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("projetos", projetoService.listarTodos());
-        return "projetos/lista";
-    }
+    String listar(Model model);
 
+    @Operation(summary = "Exibir formulário para novo projeto",
+            description = "Exibe o formulário para adicionar um novo projeto.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Formulário exibido com sucesso",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor",
+                    content = @Content(mediaType = "application/json"))
+    })
     @GetMapping("/novo")
-    public String novo(Model model) {
-        model.addAttribute("projeto", new Projeto());
-        model.addAttribute("statusList", Status.values());
-        return "projetos/form";
-    }
+    String novo(Model model);
 
+    @Operation(summary = "Salvar um novo projeto",
+            description = "Salva um novo projeto no sistema com base nos dados enviados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Projeto salvo com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Projeto.class))),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor",
+                    content = @Content(mediaType = "application/json"))
+    })
     @PostMapping
-    public String salvar(@Valid Projeto projeto, BindingResult result, RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            return "projetos/form";
-        }
-        projetoService.salvar(projeto);
-        attributes.addFlashAttribute("mensagem", "Projeto salvo com sucesso!");
-        return "redirect:/projetos";
-    }
+    String salvar(Projeto projeto, BindingResult result, RedirectAttributes attributes);
 
+    @Operation(summary = "Excluir um projeto",
+            description = "Exclui um projeto do sistema com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Projeto excluído com sucesso",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor",
+                    content = @Content(mediaType = "application/json"))
+    })
     @DeleteMapping("/{id}")
-    public String excluir(@PathVariable Long id, RedirectAttributes attributes) {
-        projetoService.excluir(id);
-        attributes.addFlashAttribute("mensagem", "Projeto excluído com sucesso!");
-        return "redirect:/projetos";
-    }
+    String excluir(@PathVariable Long id, RedirectAttributes attributes);
 }

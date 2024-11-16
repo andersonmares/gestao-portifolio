@@ -8,12 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    # properties:
-    #   hibernate:
-    #     dialect: org.hibernate.dialect.PostgreSQL95Dialect
-    # mvc:
-    #   pathmatch:
-    #     matching-strategy: ant_path_matcher
+    show-sql: true
 
 springdoc:
   swagger-ui:
@@ -24,5 +19,5 @@ springdoc:
 
 logging:
   level:
-    org.springdoc: DEBUG
+    org.springdoc: INFO
     org.springframework: INFO
