@@ -27,8 +27,8 @@ public class ProjetoService {
 
     public Projeto salvar(Projeto projeto) {
         if (projeto.getStatus() == Status.INICIADO ||
-                projeto.getStatus() == Status.EM_ANDAMENTO ||
-                projeto.getStatus() == Status.ENCERRADO) {
+            projeto.getStatus() == Status.EM_ANDAMENTO ||
+            projeto.getStatus() == Status.ENCERRADO) {
             throw new BusinessException("Não é possível excluir projeto com status iniciado, em andamento ou encerrado.");
         }
         return projetoRepository.save(projeto);

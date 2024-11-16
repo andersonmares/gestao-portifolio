@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Tag(name = "Projetos")
 public interface ProjetoController {
 
@@ -27,7 +29,7 @@ public interface ProjetoController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping
-    String listar(Model model);
+    List<Projeto> listar(Model model);
 
     @Operation(summary = "Exibir formulário para novo projeto",
             description = "Exibe o formulário para adicionar um novo projeto.")
@@ -51,7 +53,7 @@ public interface ProjetoController {
                     content = @Content(mediaType = "application/json"))
     })
     @PostMapping
-    String salvar(Projeto projeto, BindingResult result, RedirectAttributes attributes);
+    Projeto salvar(Projeto projeto, BindingResult result, RedirectAttributes attributes);
 
     @Operation(summary = "Excluir um projeto",
             description = "Exclui um projeto do sistema com base no ID fornecido.")
@@ -64,5 +66,5 @@ public interface ProjetoController {
                     content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping("/{id}")
-    String excluir(@PathVariable Long id, RedirectAttributes attributes);
+    void excluir(@PathVariable Long id, RedirectAttributes attributes);
 }

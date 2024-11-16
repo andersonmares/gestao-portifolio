@@ -9,6 +9,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  spring:
+    mvc:
+      view:
+        prefix: /WEB-INF/jsp/
+        suffix: .jsp
 
 springdoc:
   swagger-ui:
@@ -20,4 +28,4 @@ springdoc:
 logging:
   level:
     org.springdoc: INFO
-    org.springframework: INFO
+    org.springframework: DEBUG
